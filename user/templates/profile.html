@@ -1,0 +1,89 @@
+{% extends "base.html" %}
+{% load static %}
+{% load leaflet_tags %}
+{% block head %}
+    {% leaflet_js %}
+    {% leaflet_css %}
+    <link rel="stylesheet" type="text/css" href="{% static 'map.css' %}" />
+{% endblock head %}
+{%block content %}
+    <form method ='POST'>
+        {% csrf_token %}
+        <br>
+        <div class="mb-2">
+            <div class="row mx-0">
+                <div class="col-sm-3">
+                    <h6 class="mb-0">Email</h6>
+                </div>
+                <input class="col-sm-6 text-primary" name='email'  value='{{user.email}}'/>
+                
+            </div>
+            <hr>
+            <div class="row mx-0">
+                <div class="col-sm-3">
+                    <h6 class="mb-0">username</h6>
+                </div>
+                <input class="col-sm-6 text-primary" name='username'  value='{{user.username}}'/>
+            </div>
+            <hr>
+            <div class="row mx-0">
+                <div class="col-sm-3">
+                    <h6 class="mb-0">Address</h6>
+                </div>
+                <input class="col-sm-6 text-primary" name='address' value='{{user.address}}'/>
+            </div>
+            <hr>
+            <div class="row mx-0">
+                <div class="col-sm-3">
+                    <h6 class="mb-0">Phone Number</h6>
+                </div>
+                <input class="col-sm-6 text-primary" name='phone_number' value='{{user.phone_number}}'/>
+            </div>
+            <hr>
+            <div class="row mx-0">
+                <div class="col-sm-6">
+                    <h6 class="mb-0">Location</h6>
+                    <div id="mapid"></div>
+                    {% leaflet_map "main" callback="map_init" %}
+
+                    </div>
+                    <script type="text/javascript">
+                        function map_init(map, options) {
+                            // get point lat and lon
+                            var marker = L.marker();
+                            var lon = "{{ object.location.x }}";
+                            var lat = "{{ object.location.y }}";
+                            // zoom to point & add it to map
+                            map.setView([lat, lon], 5);
+                            L.marker([lat, lon]).addTo(map);
+                            map.on('click', function (e) {
+                                var lat = e.latlng.lat;
+                                var lng = e.latlng.lng;
+                                var cords = "SRID=4326;" + "POINT (" + lng + " " + lat + ")"
+                                if (typeof marker != 'undefined') {
+                                    map.removeLayer(marker);
+                                    marker = L.marker([lat, lng]).addTo(map);
+                                }
+                                else {
+                                    marker = L.marker([lat, lng]).addTo(map);
+                                }
+                                console.log(lat, lng);
+                                document.getElementById("location-field").setAttribute('type','hidden');
+                                document.getElementById('location-field').value = cords;
+                            });
+                        }
+                    </script>
+
+                </div>
+                <input type="hidden" id="location-field" class="col-sm-9 text-secondary" name='location' value='{{user.location}}'/>
+            </div>
+            
+     </div> 
+
+        <div class="field btn">
+            <div class="btn-layer"></div>
+            <input type="submit" name='form' value="Update">
+         </div>
+    </form>
+    {% endblock content %}
+

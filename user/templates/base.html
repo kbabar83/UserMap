@@ -1,0 +1,35 @@
+<!-- {% load static %} -->
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    {% block head %}
+    {% endblock head%}
+    <title>{% block title %}User Map{% endblock title %}</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <!-- <link rel="stylesheet" type="text/css" href="{% static 'map.css' %}" /> -->
+    <!-- <link rel="stylesheet" type="text/css" href="https:///unpkg.com/leaflet/dist/leaflet.css" /> -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta2/dist/css/bootstrap.min.css" rel="stylesheet"
+    integrity="sha384-BmbxuPwQa2lc/FVzBcNJ7UAyJxM6wuqIj61tLrc4wSX0szH/Ev+nYRRuWlolflfl" crossorigin="anonymous">
+    <!-- <script src="https:///unpkg.com/leaflet/dist/leaflet.js"></script> -->
+    
+  </head>
+  <body>
+    <nav class="navbar navbar-expand-lg navbar-light bg-light ">
+      <a class="navbar-brand" href="/">Kartoza</a>
+      <button class="navbar-toggler" type="button" 2-toggle="collapse" data-target="#navbarNavAltMarkup"
+          aria-controls="navbarNavAltMarkup" aria-expanded="false" aria-label="Toggle navigation">
+          <span class="navbar-toggler-icon"></span>
+      </button>
+      <div class="collapse navbar-collapse" id="navbarNavAltMarkup">
+          <div class="navbar-nav">
+              <a class="nav-item nav-link active" href="/">Home <span class="sr-only"></span></a>
+              <a class="nav-item nav-link" href="/map/">Map</a>
+              <a class="nav-item nav-link" href="/accounts/profile/">Profile</a>
+              <a class="nav-item nav-link pull-right" href="/accounts/logout/">Signout</a>
+          </div>
+        </div>
+    </nav>
+      {% block content %}
+      {% endblock content %}
+  </body>
+</html>
